@@ -1,5 +1,3 @@
-package com.wzu.wg.lab01;
-
 /** Class that determines whether or not a year is a leap year.
  *  @author JunLi
  */
