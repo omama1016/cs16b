@@ -16,22 +16,22 @@ public class ArrayDeque<T> {
         this.arr = (T[]) new Object[CAPACITY];
     }
 
-    public ArrayDeque(ArrayDeque other) {
-        this.CAPACITY = other.CAPACITY;
-        this.first = 0;
-        this.last = 1;
-        this.numOfFirst = 0;
-        this.numOfLast = 0;
-        this.arr = (T[]) new Object[CAPACITY];
-        for (int i=0; i<other.size(); i++){
-            addLast((T) other.get(i));
-        }
-    }
+//    public ArrayDeque(ArrayDeque other) {
+//        this.CAPACITY = 8;
+//        this.first = 0;
+//        this.last = 1;
+//        this.numOfFirst = 0;
+//        this.numOfLast = 0;
+//        this.arr = (T[]) new Object[CAPACITY];
+//        for (int i=0; i<other.size(); i++){
+//            addLast((T) other.get(i));
+//        }
+//    }
 
     /*add item to the first*/
     public void addFirst(T item) {
 
-        if (isFull()){
+        if (isFull()) {
             resize(CAPACITY * 2);
         }
 
@@ -42,7 +42,7 @@ public class ArrayDeque<T> {
 
     /*add item to the last*/
     public void addLast(T item) {
-        if (isFull()){
+        if (isFull()) {
             resize(CAPACITY * 2);
         }
         last = (last + CAPACITY - 1) % CAPACITY;
@@ -51,7 +51,7 @@ public class ArrayDeque<T> {
     }
 
     /*weather the array is full*/
-    public boolean isFull() {
+    private boolean isFull() {
         return numOfFirst + numOfLast == CAPACITY;
     }
 
@@ -93,7 +93,7 @@ public class ArrayDeque<T> {
 
     /*remove the first elem*/
     public T removeFirst() {
-        if (isEmpty()){
+        if (isEmpty()) {
             return null;
         }
 
@@ -102,9 +102,12 @@ public class ArrayDeque<T> {
         // shift left
         first = (first + CAPACITY - 1) % CAPACITY;
         numOfFirst--;
-        if (size()*1.0 / CAPACITY < 0.25){
-            resize(CAPACITY / 2);
+        if (CAPACITY > 8) {
+            if (size()*1.0 / CAPACITY < 0.25) {
+                resize(CAPACITY / 2);
+            }
         }
+
         return item;
     }
 
@@ -118,8 +121,10 @@ public class ArrayDeque<T> {
         // shift right
         last = (last + 1) % CAPACITY;
         numOfLast--;
-        if (size()*1.0 / CAPACITY < 0.25){
-            resize(CAPACITY / 2);
+        if (CAPACITY > 8) {
+            if (size()*1.0 / CAPACITY < 0.25) {
+                resize(CAPACITY / 2);
+            }
         }
         return item;
     }
