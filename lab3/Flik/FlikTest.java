@@ -1,4 +1,3 @@
-package com.java.lab3.Flik;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
