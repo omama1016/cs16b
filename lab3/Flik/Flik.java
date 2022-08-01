@@ -1,4 +1,3 @@
-package com.java.lab3.Flik;
 
 /** An Integer tester created by Flik Enterprises. */
 public class Flik {
