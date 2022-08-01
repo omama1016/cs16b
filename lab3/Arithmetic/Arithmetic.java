@@ -1,4 +1,3 @@
-package com.java.lab3.Arithmetic;
 
 public class Arithmetic {
     /** Computes product of two ints */
