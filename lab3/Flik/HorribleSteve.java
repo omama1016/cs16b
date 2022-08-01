@@ -1,4 +1,3 @@
-package com.java.lab3.Flik;
 
 public class HorribleSteve {
     public static void main(String [] args) {
