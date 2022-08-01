@@ -1,4 +1,3 @@
-package com.java.lab3.IntList;
 import java.util.Formatter;
 /**
  * A naked recursive list of integers, similar to what we saw in lecture 3, but
