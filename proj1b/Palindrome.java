@@ -1,5 +1,3 @@
-package com.wzu.wg.proj1B;
-
 public class Palindrome {
     public Deque<Character> wordToDeque(String word){
         Deque<Character> deque = new ArrayDeque<>();
