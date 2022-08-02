@@ -1,7 +1,4 @@
 import static org.junit.Assert.*;
-
-import com.java.proj01a.ArrayDeque;
-import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
 
 public class TestArrayDequeGold {
