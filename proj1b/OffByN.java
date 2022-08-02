@@ -1,6 +1,3 @@
-package com.java.proj01b;
-
-
 public class OffByN implements CharacterComparator {
 
     private int N;
