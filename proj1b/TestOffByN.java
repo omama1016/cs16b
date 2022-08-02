@@ -1,0 +1,18 @@
+package com.wzu.wg.proj1B;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class TestOffByN {
+
+    static CharacterComparator offByN = new OffByN(5);
+
+    @Test
+    public void testOffByOne() {
+        assertTrue(offByN.equalChars('a', 'f'));
+        assertTrue(offByN.equalChars('f', 'a'));
+        assertFalse(offByN.equalChars('f', 'h'));
+        assertFalse(offByN.equalChars('z', 'a'));
+        assertFalse(offByN.equalChars('a', 'a'));
+    }
+}
