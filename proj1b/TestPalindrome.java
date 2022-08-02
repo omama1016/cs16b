@@ -1,4 +1,3 @@
-package com.java.proj01b;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
