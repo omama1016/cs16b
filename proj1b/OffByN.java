@@ -1,5 +1,3 @@
-package com.wzu.wg.proj1B;
-
 public class OffByN implements CharacterComparator {
 
     private int N;
