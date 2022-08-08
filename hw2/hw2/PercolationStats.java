@@ -16,14 +16,13 @@ public class PercolationStats {
     // perform T independent experiments on an N-by-N grid
     public PercolationStats(int N, int T, PercolationFactory pf)  {
 
-        if (N < 0 || T < 0) {
+        if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException("Illegal Augment!");
         }
-
-        this.T = T;
         results = new double[T];
-        Percolation percolation = pf.make(N);
+        this.T = T;
         for (int i = 0; i < T; i++) {
+            Percolation percolation = pf.make(N);
             while (!percolation.percolates()) {
                 int row = StdRandom.uniform(N);
                 int col = StdRandom.uniform(N);
@@ -50,15 +49,15 @@ public class PercolationStats {
         return mean() + 1.96 * stddev() / Math.sqrt(T);
     }
 
-//    public static void main(String[] args) {
-//
-//        for (int N = 50; N < 500; N+=50) {
-//            PercolationStats percolationStats = new PercolationStats(50, 100, new PercolationFactory());
-//            Stopwatch time = new Stopwatch();
-//            System.out.println(percolationStats.mean());
-//            double end = time.elapsedTime();
-//            System.out.println(end + "------------------");
-//        }
-//
-//    }
+    public static void main(String[] args) {
+
+        for (int N = 50; N < 500; N+=50) {
+            PercolationStats percolationStats = new PercolationStats(50, 1000, new PercolationFactory());
+            Stopwatch time = new Stopwatch();
+            System.out.println(percolationStats.mean());
+            double end = time.elapsedTime();
+            System.out.println(end + "------------------");
+        }
+
+    }
 }
