@@ -12,6 +12,9 @@ public class Percolation {
 
     // create N-by-N grid, with all sites initially blocked
     public Percolation(int N) {
+        if (N <= 0) {
+            throw new IllegalArgumentException("No Illegal!");
+        }
         this.N = N;
         uf = new WeightedQuickUnionUF(N*N + 2);
         ufTop = new WeightedQuickUnionUF(N*N + 2);
@@ -88,6 +91,9 @@ public class Percolation {
     }
     // does the system percolate?
     public boolean percolates() {
+        if (N == 1) {
+            return sites[0][0];
+        }
         return uf.connected(N*N, N*N+1);
     }
 
