@@ -194,6 +194,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
+        if (size() == 0) {
+            return null;
+        }
         T item = contents[1].item();
         swap(1, size);
         contents[size--] = null;
@@ -222,6 +225,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     public void changePriority(T item, double priority) {
 
         T key = delete(item);
+        if (key == null) {
+            throw new IllegalArgumentException("No item in PQ...");
+        }
         insert(key, priority);
     }
 
@@ -234,16 +240,15 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         T res = contents[index].item();
         swapNodeMapping(getNode(index).item(), getNode(size).item());
         swap(index, size);
-        contents[size] = null;
+        contents[size--] = null;
         nodeToIndex.remove(item);
-        if (size != index) {
+        if (index <= size) {
             if (getNode(index).myPriority < getNode(parentIndex(index)).myPriority) {
                 swim(index);
             }else {
                 sink(index);
             }
         }
-        size--;
         return res;
     }
 
