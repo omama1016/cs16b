@@ -1,8 +1,6 @@
 package hw4.puzzle;
 import edu.princeton.cs.algs4.Queue;
 
-import java.util.Map;
-
 public class Board implements WorldState{
 
     private final int BLANK = 0;
@@ -41,6 +39,7 @@ public class Board implements WorldState{
         int count = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
+                if (board[i][j] == 0) continue;
                 if (board[i][j] != goal[i][j]) {
                     count++;
                 }
@@ -76,14 +75,15 @@ public class Board implements WorldState{
     }
     public boolean equals(Object y) {
         Board other = (Board) y;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (board[i][j] != other.board[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
+//        for (int i = 0; i < N; i++) {
+//            for (int j = 0; j < N; j++) {
+//                if (board[i][j] != other.board[i][j]) {
+//                    return false;
+//                }
+//            }
+//        }
+//        return true;
+        return this.toString().equals(other.toString());
     }
 
     @Override
