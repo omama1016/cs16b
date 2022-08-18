@@ -1,7 +1,5 @@
 import edu.princeton.cs.algs4.Picture;
 
-import java.util.Arrays;
-
 public class SeamCarver {
     private int[][] energies;
     private Picture picture;
@@ -9,7 +7,13 @@ public class SeamCarver {
     private int[] horizontalSeam;
 
     public SeamCarver(Picture picture) {
-        this.picture = picture;
+        this.picture = new Picture(picture.width(), picture.height());
+        for (int i = 0; i < picture.width(); i++) {
+            for (int j = 0; j < picture.height(); j++) {
+                this.picture.set(i, j, picture.get(i, j));
+            }
+        }
+
         energies = new int[picture.width()][picture.height()];
 
         // cal the energies
@@ -83,12 +87,12 @@ public class SeamCarver {
         int upY = y - 1 >= 0 ? y - 1 : picture.height() - 1;
         int downY = y + 1 <= picture.height() - 1 ? y + 1 : 0;
 
-        int deltaXRed = Math.abs( picture.get(rightX, y).getRed() - picture.get(leftX, y).getRed());
-        int deltaXGreen = Math.abs( picture.get(rightX, y).getGreen() - picture.get(leftX, y).getGreen());
-        int deltaXBlue = Math.abs( picture.get(rightX, y) .getBlue() - picture.get(leftX, y).getBlue());
-        int deltaYRed = Math.abs( picture.get(x, downY) .getRed() - picture.get(x, upY).getRed());
-        int deltaYGreen = Math.abs( picture.get(x, downY) .getGreen() - picture.get(x, upY).getGreen());
-        int deltaYBlue = Math.abs( picture.get(x, downY) .getBlue() - picture.get(x, upY).getBlue());
+        int deltaXRed = Math.abs(picture.get(rightX, y).getRed() - picture.get(leftX, y).getRed());
+        int deltaXGreen = Math.abs(picture.get(rightX, y).getGreen() - picture.get(leftX, y).getGreen());
+        int deltaXBlue = Math.abs(picture.get(rightX, y).getBlue() - picture.get(leftX, y).getBlue());
+        int deltaYRed = Math.abs(picture.get(x, downY).getRed() - picture.get(x, upY).getRed());
+        int deltaYGreen = Math.abs(picture.get(x, downY).getGreen() - picture.get(x, upY).getGreen());
+        int deltaYBlue = Math.abs(picture.get(x, downY).getBlue() - picture.get(x, upY).getBlue());
 
         return deltaXRed*deltaXRed + deltaXGreen*deltaXGreen + deltaXBlue*deltaXBlue
                 + deltaYRed*deltaYRed + deltaYGreen*deltaYGreen + deltaYBlue*deltaYBlue;
