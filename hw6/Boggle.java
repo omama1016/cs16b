@@ -50,7 +50,7 @@ public class Boggle {
         // YOUR CODE HERE
         if (k <= 0) throw new IllegalArgumentException();
         ArrayList<String> result = new ArrayList<>();
-        HashSet<String> set = new HashSet();
+        HashSet<String> set = new HashSet<>();
         MinPQ<Node> queue = new MinPQ<>();
         Trie trie = new Trie(dictPath);
         board = readData(boardFilePath);
@@ -58,28 +58,29 @@ public class Boggle {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 if (board[i][j].equals("qu")) continue;
-                solveHelp(board[i][j], i, j, queue, trie);
+                solveHelp(board[i][j], i, j, set, trie);
             }
+        }
+
+        for (String s : set) {
+            queue.insert(new Node(0,0, s));
         }
 
         int count = 0;
         while (count < k) {
             if (!queue.isEmpty()) {
                 String r = queue.delMin().s;
-                if (!set.contains(r)) {
-                    result.add(r);
-                    set.add(r);
-                    count++;
-                }
+                result.add(r);
+                count++;
             } else {
                 break;
             }
-
         }
+
         return result;
     }
 
-    private static void solveHelp(String cur, int row, int col, MinPQ<Node> res, Trie trie) {
+    private static void solveHelp(String cur, int row, int col, HashSet<String> res, Trie trie) {
 
         if (cur == null) {
             return;
@@ -93,7 +94,7 @@ public class Boggle {
         visited[row][col] = true;
         if (cur.length() >= 3) {
             if (trie.search(cur)) {
-                res.insert(new Node(row, col, cur));
+                res.add(cur);
             }
         }
 
@@ -166,10 +167,10 @@ public class Boggle {
         return board;
     }
 
-//    public static void main(String[] args) {
-//        List<String> res = Boggle.solve(7, "exampleBoard.txt");
-//        for (String s : res) {
-//            System.out.println(s);
-//        }
-//    }
+    public static void main(String[] args) {
+        List<String> res = Boggle.solve(10, "smallBoard2.txt");
+        for (String s : res) {
+            System.out.println(s);
+        }
+    }
 }
