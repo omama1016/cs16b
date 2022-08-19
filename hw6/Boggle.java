@@ -1,9 +1,6 @@
-import edu.princeton.cs.algs4.MaxPQ;
-import edu.princeton.cs.algs4.MinPQ;
-import edu.princeton.cs.algs4.Stack;
 
+import edu.princeton.cs.algs4.MinPQ;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -12,10 +9,10 @@ public class Boggle {
     // File path of dictionary file
 //    static String dictPath = "trivial_words.txt";
     static String dictPath = "words.txt";
-    private static Node[][] board;
+    private static String[][] board;
     private static boolean[][] visited;
 
-    private static class Node implements Comparable{
+    private static class Node implements Comparable<Node>{
         int row;
         int col;
         String s;
@@ -27,8 +24,7 @@ public class Boggle {
         }
 
         @Override
-        public int compareTo(Object o) {
-            Node other = (Node) o;
+        public int compareTo(Node other) {
             if (this.s.length() > other.s.length()) {
                 return -1;
             } else if (this.s.length() == other.s.length()) {
@@ -37,6 +33,7 @@ public class Boggle {
                 return 1;
             }
         }
+
     }
     /**
      * Solves a Boggle puzzle.
@@ -60,8 +57,8 @@ public class Boggle {
         visited = new boolean[board.length][board[0].length];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j].s.equals("qu")) continue;
-                solveHelp(board[i][j], queue, trie);
+                if (board[i][j].equals("qu")) continue;
+                solveHelp(board[i][j], i, j, queue, trie);
             }
         }
 
@@ -82,30 +79,29 @@ public class Boggle {
         return result;
     }
 
-    private static void solveHelp(Node cur, MinPQ<Node> res, Trie trie) {
+    private static void solveHelp(String cur, int row, int col, MinPQ<Node> res, Trie trie) {
 
         if (cur == null) {
             return;
         }
 
         // prune
-        if (!trie.prefix(cur.s)) {
+        if (!trie.prefix(cur)) {
             return;
         }
 
-        visited[cur.row][cur.col] = true;
-        if (cur.s.length() >= 3) {
-            if (trie.search(cur.s)) {
-                res.insert(cur);
+        visited[row][col] = true;
+        if (cur.length() >= 3) {
+            if (trie.search(cur)) {
+                res.insert(new Node(row, col, cur));
             }
         }
 
-        for (Node neighbor : notVisitedNeighbors(cur.row, cur.col)) {
-            Node newNode = new Node(neighbor.row, neighbor.col, cur.s + neighbor.s);
-            solveHelp(newNode, res, trie);
+        for (Node neighbor : notVisitedNeighbors(row, col)) {
+            solveHelp(cur + neighbor.s, neighbor.row, neighbor.col, res, trie);
         }
 
-        visited[cur.row][cur.col] = false;
+        visited[row][col] = false;
     }
 
     private static boolean inBounds(int r, int c){
@@ -118,25 +114,33 @@ public class Boggle {
     private static List<Node> notVisitedNeighbors(int r, int c) {
         List<Node> temp = new ArrayList<>();
         // topLeft
-        if (inBounds(r - 1, c - 1) && !visited[r - 1][c - 1]) temp.add(board[r - 1][c - 1]);
+        if (inBounds(r - 1, c - 1) && !visited[r - 1][c - 1])
+            temp.add(new Node(r-1, c-1, board[r-1][c-1]));
         // topRight
-        if (inBounds(r - 1, c + 1) && !visited[r - 1][c + 1]) temp.add(board[r - 1][c + 1]);
+        if (inBounds(r - 1, c + 1) && !visited[r - 1][c + 1])
+            temp.add(new Node(r-1, c+1, board[r-1][c+1]));
         // top
-        if (inBounds(r - 1, c) && !visited[r - 1][c]) temp.add(board[r - 1][c]);
+        if (inBounds(r - 1, c) && !visited[r - 1][c])
+            temp.add(new Node(r-1, c, board[r-1][c]));
         // left
-        if (inBounds(r, c - 1) && !visited[r][c - 1]) temp.add(board[r][c - 1]);
+        if (inBounds(r, c - 1) && !visited[r][c - 1])
+            temp.add(new Node(r, c-1, board[r][c-1]));
         // right
-        if (inBounds(r, c + 1) && !visited[r][c + 1]) temp.add(board[r][c + 1]);
+        if (inBounds(r, c + 1) && !visited[r][c + 1])
+            temp.add(new Node(r, c+1, board[r][c+1]));
         // down
-        if (inBounds(r + 1, c) && !visited[r + 1][c]) temp.add(board[r + 1][c]);
+        if (inBounds(r + 1, c) && !visited[r + 1][c])
+            temp.add(new Node(r+1, c, board[r+1][c]));
         // downLeft
-        if (inBounds(r + 1, c - 1) && !visited[r + 1][c - 1]) temp.add(board[r + 1][c - 1]);
+        if (inBounds(r + 1, c - 1) && !visited[r + 1][c - 1])
+            temp.add(new Node(r+1, c-1, board[r+1][c-1]));
         // downRight
-        if (inBounds(r + 1, c + 1) && !visited[r + 1][c + 1]) temp.add(board[r + 1][c + 1]);
+        if (inBounds(r + 1, c + 1) && !visited[r + 1][c + 1])
+            temp.add(new Node(r+1, c+1, board[r+1][c+1]));
         return temp;
     }
 
-    private static Node[][] readData(String filename){
+    private static String[][] readData(String filename){
         In in = new In(filename);
         if (!in.exists()) throw new IllegalArgumentException();
         ArrayList<ArrayList<Character>> temp = new ArrayList<>();
@@ -152,20 +156,20 @@ public class Boggle {
                 throw new IllegalArgumentException();
             }
         }
-        Node[][] board = new Node[temp.size()][temp.get(0).size()];
+        String[][] board = new String[temp.size()][temp.get(0).size()];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                board[i][j] = new Node(i, j, String.valueOf(temp.get(i).get(j)));
+                board[i][j] = String.valueOf(temp.get(i).get(j));
             }
 
         }
         return board;
     }
 
-    public static void main(String[] args) {
-        List<String> res = Boggle.solve(7, "smallBoard.txt");
-        for (String s : res) {
-            System.out.println(s);
-        }
-    }
+//    public static void main(String[] args) {
+//        List<String> res = Boggle.solve(7, "exampleBoard.txt");
+//        for (String s : res) {
+//            System.out.println(s);
+//        }
+//    }
 }
